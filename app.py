@@ -8,8 +8,8 @@ var = Var()
 evaluator = Eval()
 
 print('\n========== MATH EXPRESSION ==========\n')
+print('To exit the program write \'exit\'\n')
 while True:
-    print('To exit the program write \'exit\'\n')
     exp = input('Enter your math expression: ')
     if exp == 'exit':
         sys.exit()
