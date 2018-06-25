@@ -27,11 +27,6 @@ To use variables within math expression:
 Enter your math expression: @x+@x
 ```
 
-To use variables within math expression:
-```
-Enter your math expression: @x+@x
-```
-
 Finally to exit the program:
 ```
 Enter your math expression: exit
