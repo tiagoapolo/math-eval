@@ -1,10 +1,12 @@
 #!/usr/bin/env
 
 from syntax import Syntax
+from insideVariables import Var
 
 class Eval:
 
     def __init__(self):
+        # self.variables = []
         pass
     
     def parse(self, expression):
@@ -49,5 +51,12 @@ class Eval:
         
         elif(ast[0] == 'Unary'):
             return (0 - self.evaluate(ast[1]))
-        
-    
+
+        elif ast[0] == 'Variable':
+            return ast[1]
+
+        elif(ast[0] == 'Attribute'):
+            var = Var.getInstance()
+            var.appendVar([self.evaluate(ast[1]), self.evaluate(ast[2])])
+            # self.variables.append([self.evaluate(ast[1]), self.evaluate(ast[2])])
+            return str(ast[1][1])+"="+str(ast[2][1])

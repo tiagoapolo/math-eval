@@ -1,17 +1,18 @@
 #!/usr/bin/env
-
 from tokenizer import Tokenizer
+from insideVariables import Var
 
 class Lexer:
     def __init__(self, expression):
+
         self.tokensPos = 0
         self.expression = expression
         self.tokens = []
 
-        try:
-            self.tokenizer()
-        except ValueError:
-            raise ValueError
+        # try:
+        self.tokenizer()
+        # except ValueError:
+        #     raise ValueError
 
 
     def tokenizer(self):
@@ -81,12 +82,48 @@ class Lexer:
             
             elif current == ')':
                 token = Tokenizer(')')
-            
+
+            elif current == '@':
+
+                variable = ''
+                i = i + 1
+                current = self.expression[i]
+
+                while (current.isalpha()):
+                    variable = variable + current
+                    i = i + 1
+                    if (i >= expressionLen):
+                        break
+                    current = self.expression[i]
+
+                # if :
+                var = Var.getInstance()
+                val = var.getVar(variable)
+                if val == None:
+                    raise ValueError('Variable => ' + variable + ' not declared')
+
+                token = Tokenizer('Number', val[1])
+                i = i - 1
+
+            elif current.isalpha():
+                variable = ''
+                while (current.isalpha()):
+                    variable = variable + current
+                    i = i + 1
+                    current = self.expression[i]
+
+                token = Tokenizer('Variable', variable)
+                i = i - 1
+
+            elif current == '=':
+                token = Tokenizer('=')
+
             else:
                 raise ValueError("INVALID TOKEN => %s" % current)
 
-            i = i + 1            
-            self.tokens.append(token)        
+            i = i + 1
+            if token:
+                self.tokens.append(token)
 
     def nextToken(self):
 

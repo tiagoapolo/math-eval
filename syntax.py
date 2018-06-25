@@ -13,7 +13,7 @@ class Syntax:
         self.token = self.lexer.nextToken()
 
         # try:
-        self.ast = self.exp()
+        self.ast = self.vari()
         
         # except ValueError:
         #     print("error!")
@@ -52,7 +52,22 @@ class Syntax:
         else:        
             raise ValueError("A expression must be provided")
         
-                    
+    def vari(self):
+
+        expression = self.exp()
+
+        if(expression):
+            while (self.token.getType() == "="):
+                operator = self.read(self.token.getType())
+                if (operator):
+                    exp = self.term()
+                    if (exp):
+                        expression = ["Attribute", expression, exp]
+
+            return expression
+
+        else:
+            raise ValueError("A expression must be provided")
             
     def exp(self):        
 
@@ -151,11 +166,25 @@ class Syntax:
                         raise ValueError("Brackets should be balanced")
                     
                 
-                else:                
+                else:
                     raise ValueError("After a ( should have another expression")                
             
             else:            
                 raise ValueError("Error trying to read ( char")
+
+        elif self.token.getType() == "Variable":
+            variableToken = self.read("Variable")
+            if variableToken:
+                return ["Variable", variableToken.getLex()]
+            else:
+                raise ValueError("Error processing a variable on the tree")
+
+        # elif(self.token.getType() == "="):
+        #     variableToken = self.read("=")
+        #     if variableToken:
+        #         return ["=", variableToken.getLex()]
+        #     else:
+        #         raise ValueError("Error processing a variable on the tree")
             
 
     def read(self, typeValue):

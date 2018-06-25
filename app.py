@@ -1,8 +1,21 @@
 #!/usr/bin/env
+import sys
 
 from eval import Eval
+from insideVariables import Var
 
+var = Var()
 evaluator = Eval()
-print("Output 1: %s" % evaluator.parse('12*0.5'))
-print("Output 2: %s" % evaluator.parse('(2+0)^(2+3)/2*3^34*76/(9+123)'))
-print("Output 3: %s" % evaluator.parse('2*3^2'))
+
+print('\n========== MATH EXPRESSION ==========\n')
+while True:
+    print('To exit the program write \'exit\'\n')
+    exp = input('Enter your math expression: ')
+    if exp == 'exit':
+        sys.exit()
+    try:
+        result = evaluator.parse(exp)
+        print(result)
+    except ValueError as err:
+        print('Error: '+str(err))
+        sys.exit()
